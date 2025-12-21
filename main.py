@@ -7,27 +7,67 @@ def solve_shift_scheduling():
     # -------------------------------------------------------------------------
     # 1. Data Definition
     # -------------------------------------------------------------------------
-    # ADDED: 'max_mornings' and 'max_evenings' to each employee
+    # ADDED: 'min_mornings', 'min_evenings', 'min_nights' to each employee
     employees = [
-        {'name': 'Barak', 'target_shifts': 6, 'max_shifts': 6, 'max_nights': 0, 'max_mornings': 6, 'max_evenings': 0,
+        # Example: Barak must do at least 1 night, 1 morning, 1 evening
+        {'name': 'Barak', 'target_shifts': 6, 'max_shifts': 6,
+         'max_nights': 0, 'min_nights': 0,
+         'max_mornings': 6, 'min_mornings': 6,
+         'max_evenings': 0, 'min_evenings': 0,
          'history_streak': 0},
-        {'name': 'Billy', 'target_shifts': 5, 'max_shifts': 5, 'max_nights': 2, 'max_mornings': 3, 'max_evenings': 3,
+
+        {'name': 'Billy', 'target_shifts': 5, 'max_shifts': 5,
+         'max_nights': 2, 'min_nights': 1,
+         'max_mornings': 3, 'min_mornings': 2,
+         'max_evenings': 3, 'min_evenings': 3,
          'history_streak': 6},
-        {'name': 'Asaf', 'target_shifts': 5, 'max_shifts': 6, 'max_nights': 2, 'max_mornings': 0, 'max_evenings': 3,
+
+        {'name': 'Asaf', 'target_shifts': 5, 'max_shifts': 6,
+         'max_nights': 2, 'min_nights': 2,
+         'max_mornings': 0, 'min_mornings': 0,
+         'max_evenings': 3, 'min_evenings': 3,
          'history_streak': 2},
-        {'name': 'Gadi', 'target_shifts': 5, 'max_shifts': 6, 'max_nights': 2, 'max_mornings': 3, 'max_evenings': 4,
+
+        {'name': 'Gadi', 'target_shifts': 5, 'max_shifts': 6,
+         'max_nights': 2, 'min_nights': 2,
+         'max_mornings': 3, 'min_mornings': 0,
+         'max_evenings': 3, 'min_evenings': 5,
          'history_streak': 0},
-        {'name': 'Saar', 'target_shifts': 5, 'max_shifts': 6, 'max_nights': 2, 'max_mornings': 3, 'max_evenings': 5,
+
+        {'name': 'Saar', 'target_shifts': 5, 'max_shifts': 6,
+         'max_nights': 2, 'min_nights': 1,
+         'max_mornings': 3, 'min_mornings': 0,
+         'max_evenings': 5, 'min_evenings': 0,
          'history_streak': 0},
-        {'name': 'Ira', 'target_shifts': 5, 'max_shifts': 6, 'max_nights': 1, 'max_mornings': 5, 'max_evenings': 5,
+
+        {'name': 'Ira', 'target_shifts': 5, 'max_shifts': 6,
+         'max_nights': 1, 'min_nights': 1,
+         'max_mornings': 3, 'min_mornings': 2,
+         'max_evenings': 3, 'min_evenings': 0,
          'history_streak': 0},
-        {'name': 'Shon', 'target_shifts': 3, 'max_shifts': 4, 'max_nights': 2, 'max_mornings': 2, 'max_evenings': 5,
+
+        {'name': 'Shon', 'target_shifts': 3, 'max_shifts': 4,
+         'max_nights': 2, 'min_nights': 0,  # Shon doesn't have a minimum night requirement
+         'max_mornings': 2, 'min_mornings': 0,
+         'max_evenings': 4, 'min_evenings': 0,
          'history_streak': 0},
-        {'name': 'Gilad', 'target_shifts': 3, 'max_shifts': 4, 'max_nights': 2, 'max_mornings': 2, 'max_evenings': 3,
+
+        {'name': 'Gilad', 'target_shifts': 3, 'max_shifts': 4,
+         'max_nights': 1, 'min_nights': 1,
+         'max_mornings': 3, 'min_mornings': 0,
+         'max_evenings': 4, 'min_evenings': 0,
          'history_streak': 0},
-        {'name': 'Dolev', 'target_shifts': 3, 'max_shifts': 4, 'max_nights': 3, 'max_mornings': 0, 'max_evenings': 5,
+
+        {'name': 'Dolev', 'target_shifts': 3, 'max_shifts': 4,
+         'max_nights': 3, 'min_nights': 2,
+         'max_mornings': 2, 'min_mornings': 0,
+         'max_evenings': 4, 'min_evenings': 0,
          'history_streak': 0},
-        {'name': 'Michael', 'target_shifts': 3, 'max_shifts': 4, 'max_nights': 2, 'max_mornings': 4, 'max_evenings': 5,
+
+        {'name': 'Michael', 'target_shifts': 3, 'max_shifts': 4,
+         'max_nights': 2, 'min_nights': 0,
+         'max_mornings': 2, 'min_mornings': 0,
+         'max_evenings': 2, 'min_evenings': 0,
          'history_streak': 0},
     ]
 
@@ -127,12 +167,19 @@ def solve_shift_scheduling():
     # -------------------------------------------------------------------------
     # 4. Soft Constraints (Optimization)
     # -------------------------------------------------------------------------
-    WEIGHT_NIGHTS = 5
-    WEIGHT_MORNINGS = 4  # NEW
-    WEIGHT_EVENINGS = 4  # NEW
-    WEIGHT_REST_GAP = 2
     WEIGHT_TARGET_SHIFTS = 4
-    WEIGHT_CONSECUTIVE_NIGHTS = 20  # NEW - High penalty for 3 nights in a row
+    WEIGHT_REST_GAP = 2
+
+    # Weights for MAXIMUM constraints
+    WEIGHT_MAX_NIGHTS = 5
+    WEIGHT_MAX_MORNINGS = 4
+    WEIGHT_MAX_EVENINGS = 4
+    WEIGHT_CONSECUTIVE_NIGHTS = 20
+
+    # Weights for MINIMUM constraints (NEW)
+    WEIGHT_MIN_NIGHTS = 5
+    WEIGHT_MIN_MORNINGS = 4
+    WEIGHT_MIN_EVENINGS = 4
 
     objective_terms = []
 
@@ -151,33 +198,53 @@ def solve_shift_scheduling():
             for s in range(num_shifts):
                 emp_shifts.append(shift_vars[(e, d, s)])
 
-        # 1. Limit Max Night Shifts
+        # --- MAXIMUM CONSTRAINTS (Don't do too much) ---
+
+        # Max Nights
         excess_nights = model.NewIntVar(0, 7, f'excess_nights_{e}')
         model.Add(sum(night_shifts) <= employees[e]['max_nights'] + excess_nights)
-        objective_terms.append(excess_nights * WEIGHT_NIGHTS)
+        objective_terms.append(excess_nights * WEIGHT_MAX_NIGHTS)
 
-        # 2. Limit Max Morning Shifts (NEW)
+        # Max Mornings
         excess_mornings = model.NewIntVar(0, 7, f'excess_mornings_{e}')
         model.Add(sum(morning_shifts) <= employees[e]['max_mornings'] + excess_mornings)
-        objective_terms.append(excess_mornings * WEIGHT_MORNINGS)
+        objective_terms.append(excess_mornings * WEIGHT_MAX_MORNINGS)
 
-        # 3. Limit Max Evening Shifts (NEW)
+        # Max Evenings
         excess_evenings = model.NewIntVar(0, 7, f'excess_evenings_{e}')
         model.Add(sum(evening_shifts) <= employees[e]['max_evenings'] + excess_evenings)
-        objective_terms.append(excess_evenings * WEIGHT_EVENINGS)
+        objective_terms.append(excess_evenings * WEIGHT_MAX_EVENINGS)
 
-        # 4. Avoid 3 Consecutive Nights (NEW)
-        # Checking windows of 3 days: [d, d+1, d+2]
+        # --- MINIMUM CONSTRAINTS (Don't do too little) ---
+
+        # Min Nights
+        # Logic: (Actual Nights) + (Shortage) >= (Min Nights)
+        # We want to minimize Shortage.
+        shortage_nights = model.NewIntVar(0, 7, f'shortage_nights_{e}')
+        model.Add(sum(night_shifts) + shortage_nights >= employees[e]['min_nights'])
+        objective_terms.append(shortage_nights * WEIGHT_MIN_NIGHTS)
+
+        # Min Mornings
+        shortage_mornings = model.NewIntVar(0, 7, f'shortage_mornings_{e}')
+        model.Add(sum(morning_shifts) + shortage_mornings >= employees[e]['min_mornings'])
+        objective_terms.append(shortage_mornings * WEIGHT_MIN_MORNINGS)
+
+        # Min Evenings
+        shortage_evenings = model.NewIntVar(0, 7, f'shortage_evenings_{e}')
+        model.Add(sum(evening_shifts) + shortage_evenings >= employees[e]['min_evenings'])
+        objective_terms.append(shortage_evenings * WEIGHT_MIN_EVENINGS)
+
+        # --- REST AND LOGIC CONSTRAINTS ---
+
+        # Avoid 3 Consecutive Nights
         for d in range(num_days - 2):
             is_three_nights = model.NewBoolVar(f'3nights_{e}_{d}')
-            # Logic: IF night[d] AND night[d+1] AND night[d+2] THEN is_three_nights = True
             model.AddBoolAnd([
                 shift_vars[(e, d, 2)],
                 shift_vars[(e, d + 1, 2)],
                 shift_vars[(e, d + 2, 2)]
             ]).OnlyEnforceIf(is_three_nights)
 
-            # Helper to force it to 0 if not 3 nights (for strict correctness, though optimization handles it)
             model.AddBoolOr([
                 shift_vars[(e, d, 2)].Not(),
                 shift_vars[(e, d + 1, 2)].Not(),
@@ -186,7 +253,7 @@ def solve_shift_scheduling():
 
             objective_terms.append(is_three_nights * WEIGHT_CONSECUTIVE_NIGHTS)
 
-        # 5. Avoid Short Rest Gaps (8-8)
+        # Avoid Short Rest Gaps (8-8)
         for total_s in range(num_days * num_shifts - 2):
             day = total_s // num_shifts
             shift = total_s % num_shifts
@@ -200,7 +267,7 @@ def solve_shift_scheduling():
                 both_working.Not())
             objective_terms.append(both_working * WEIGHT_REST_GAP)
 
-        # 6. Target Shifts
+        # Target Shifts (Total count)
         total_worked = sum(emp_shifts)
         delta = model.NewIntVar(0, 21, f'delta_target_{e}')
         model.Add(total_worked - employees[e]['target_shifts'] <= delta)
