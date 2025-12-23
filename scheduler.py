@@ -23,17 +23,11 @@ def solve_shift_scheduling():
     # 1. Data Definition
     # -------------------------------------------------------------------------
     employees = [
-        {'name': 'Barak', 'target_shifts': 5, 'max_shifts': 6,
-         'max_nights': 0, 'min_nights': 0,
-         'max_mornings': 6, 'min_mornings': 6,
-         'max_evenings': 0, 'min_evenings': 0,
-         'history_streak': 0},
-
-        {'name': 'Billy', 'target_shifts': 5, 'max_shifts': 5,
-         'max_nights': 2, 'min_nights': 1,
+        {'name': 'Ira', 'target_shifts': 5, 'max_shifts': 6,
+         'max_nights': 1, 'min_nights': 1,
          'max_mornings': 3, 'min_mornings': 2,
-         'max_evenings': 3, 'min_evenings': 3,
-         'history_streak': 6},
+         'max_evenings': 3, 'min_evenings': 0,
+         'history_streak': 0},
 
         {'name': 'Asaf', 'target_shifts': 5, 'max_shifts': 6,
          'max_nights': 2, 'min_nights': 2,
@@ -41,34 +35,22 @@ def solve_shift_scheduling():
          'max_evenings': 3, 'min_evenings': 3,
          'history_streak': 2},
 
-        {'name': 'Gadi', 'target_shifts': 5, 'max_shifts': 6,
-         'max_nights': 2, 'min_nights': 2,
-         'max_mornings': 3, 'min_mornings': 0,
-         'max_evenings': 3, 'min_evenings': 5,
-         'history_streak': 0},
-
-        {'name': 'Saar', 'target_shifts': 4, 'max_shifts': 4,
-         'max_nights': 2, 'min_nights': 1,
-         'max_mornings': 3, 'min_mornings': 0,
-         'max_evenings': 5, 'min_evenings': 0,
-         'history_streak': 0},
-
-        {'name': 'Ira', 'target_shifts': 5, 'max_shifts': 6,
-         'max_nights': 1, 'min_nights': 1,
-         'max_mornings': 3, 'min_mornings': 2,
-         'max_evenings': 3, 'min_evenings': 0,
-         'history_streak': 0},
-
-        {'name': 'Shon', 'target_shifts': 3, 'max_shifts': 4,
-         'max_nights': 2, 'min_nights': 0,
-         'max_mornings': 2, 'min_mornings': 0,
-         'max_evenings': 4, 'min_evenings': 0,
+        {'name': 'Barak', 'target_shifts': 5, 'max_shifts': 6,
+         'max_nights': 0, 'min_nights': 0,
+         'max_mornings': 6, 'min_mornings': 6,
+         'max_evenings': 0, 'min_evenings': 0,
          'history_streak': 0},
 
         {'name': 'Gilad', 'target_shifts': 3, 'max_shifts': 4,
          'max_nights': 1, 'min_nights': 1,
          'max_mornings': 3, 'min_mornings': 0,
          'max_evenings': 4, 'min_evenings': 0,
+         'history_streak': 0},
+
+        {'name': 'Gadi', 'target_shifts': 5, 'max_shifts': 6,
+         'max_nights': 2, 'min_nights': 2,
+         'max_mornings': 3, 'min_mornings': 0,
+         'max_evenings': 3, 'min_evenings': 5,
          'history_streak': 0},
 
         {'name': 'Dolev', 'target_shifts': 4, 'max_shifts': 4,
@@ -82,11 +64,29 @@ def solve_shift_scheduling():
          'max_mornings': 2, 'min_mornings': 0,
          'max_evenings': 2, 'min_evenings': 0,
          'history_streak': 0},
+
+        {'name': 'Saar', 'target_shifts': 4, 'max_shifts': 4,
+         'max_nights': 2, 'min_nights': 1,
+         'max_mornings': 3, 'min_mornings': 0,
+         'max_evenings': 5, 'min_evenings': 0,
+         'history_streak': 0},
+
+        {'name': 'Billy', 'target_shifts': 5, 'max_shifts': 5,
+         'max_nights': 2, 'min_nights': 1,
+         'max_mornings': 3, 'min_mornings': 2,
+         'max_evenings': 3, 'min_evenings': 3,
+         'history_streak': 6},
+
+        {'name': 'Shon', 'target_shifts': 3, 'max_shifts': 4,
+         'max_nights': 2, 'min_nights': 0,
+         'max_mornings': 2, 'min_mornings': 0,
+         'max_evenings': 4, 'min_evenings': 0,
+         'history_streak': 0},
     ]
 
     employee_colors = [
         'FF9999', '99FF99', '9999FF', 'FFFF99', 'FFCC99',
-        'FF99FF', '99FFFF', 'CCCCCC', 'D9D9D9', 'E6B8B7'
+        'FF99FF', '99FFFF', 'CCCCCC', '87CEFA', 'E6B8B7'
     ]
 
     num_employees = len(employees)
@@ -101,31 +101,52 @@ def solve_shift_scheduling():
     # Format: (Employee ID, Day 0-6, Shift 0-2)
     manual_requests = [
         # ID 0
-        (0, 0, 2), (0, 1, 1), (0, 1, 2), (0, 5, 1), (0, 5, 2),
+        (0, 3, 0), (0, 3, 1), (0, 3, 2),  # Wednesday: Full Day
+        (0, 4, 0), (0, 4, 1), (0, 4, 2),  # Thursday: Full Day
+
         # ID 1
-        (1, 0, 0), (1, 1, 2), (1, 2, 0), (1, 2, 2), (1, 3, 0), (1, 3, 2),
-        (1, 4, 1), (1, 4, 2), (1, 5, 1), (1, 5, 2), (1, 6, 0), (1, 6, 1), (1, 6, 2),
+        (1, 5, 1), (1, 5, 2),  # Friday: Noon, Evening
+        (1, 6, 0), (1, 6, 1),  # Saturday: Morning, Noon
+
         # ID 2
-        (2, 4, 1), (2, 5, 1), (2, 5, 2), (2, 6, 0), (2, 6, 1),
-        # ID 3
-        (3, 1, 0), (3, 1, 1), (3, 2, 1), (3, 3, 2),
-        (3, 4, 0), (3, 4, 1), (3, 4, 2), (3, 5, 0),
+        (2, 2, 0),  # Tuesday: Morning
+        (2, 6, 0),  # Saturday: Morning
+
+        # ID 3 (Updated)
+        (3, 0, 0), (3, 0, 1), (3, 0, 2),  # Sunday: Full Day (New)
+        (3, 1, 0), (3, 1, 1), (3, 1, 2),  # Monday: Full Day
+        (3, 2, 2),  # Tuesday: Evening (New)
+        (3, 3, 1), (3, 3, 2),  # Wednesday: Full Day
+        (3, 4, 2),  # Thursday: Evening
+        (3, 6, 1), (3, 6, 2),  # Saturday: Noon, Evening
+
         # ID 4
-        (4, 6, 1),
-        # ID 5
-        (5, 0, 1),
-        # ID 6
-        (6, 0, 0), (6, 1, 0), (6, 2, 0), (6, 2, 2), (6, 3, 0), (6, 3, 2),
-        (6, 4, 0), (6, 4, 2), (6, 6, 1), (6, 6, 2),
+        (4, 0, 0), (4, 0, 1), (4, 0, 2),  # Sunday: Full Day
+        (4, 3, 1), (4, 3, 2),
+
+        # ID 5 (Top Table)
+        (5, 4, 0), (5, 4, 1), (5, 4, 2),  # Thursday: Full Day
+        (5, 5, 0), (5, 5, 1), (5, 5, 2),  # Friday: Full Day
+
+        # ID 6 (Middle Table)
+        (6, 0, 0), (6, 0, 1), (6, 0, 2),  # Sunday: Full Day
+        (6, 1, 2),  # Monday: Evening
+        (6, 2, 2),  # Tuesday: Evening
+        (6, 3, 2),  # Wednesday: Evening
+        (6, 4, 2),  # Thursday: Evening
+
         # ID 7
-        (7, 0, 0), (7, 0, 1), (7, 0, 2), (7, 1, 0), (7, 1, 1), (7, 1, 2),
-        (7, 2, 2), (7, 3, 1), (7, 3, 2), (7, 4, 1), (7, 4, 2), (7, 5, 0),
-        (7, 6, 1), (7, 6, 2),
-        # ID 8
-        (8, 0, 0), (8, 4, 2), (8, 5, 0), (8, 5, 1), (8, 5, 2), (8, 6, 0),
+
+        # ID 8 (Bottom Table) - ID Changed from 7 to 8
+        (8, 0, 0), (8, 0, 1), (8, 0, 2),  # Sunday: Full Day
+        (8,1,2),
+        (8, 2, 0),(8,2,2),  # Tuesday: Morning
+        (8, 3, 0),  # Wednesday: Morning
+        (8, 4, 1), (8, 4, 2),  # Thursday: Noon, Evening
+        (8, 5, 1), (8, 5, 2),  # Friday: Noon, Evening
+        (8, 6, 0), (8, 6, 1), (8, 6, 2)  # Saturday: Full Day
+
         # ID 9
-        (9, 0, 0), (9, 1, 0), (9, 1, 1), (9, 1, 2), (9, 2, 0), (9, 2, 1),
-        (9, 3, 0), (9, 4, 0), (9, 4, 1), (9, 4, 2), (9, 5, 0),
     ]
 
     # --------------------------------------------------------

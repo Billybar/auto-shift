@@ -1,21 +1,33 @@
+from pathlib import Path
+
 import google.generativeai as genai
 import PIL.Image
 import os
 import ast
+from dotenv import load_dotenv
 
 # --- CONFIGURATION ---
-# 1. Get your free API key here: https://aistudio.google.com/app/apikey
+current_dir = Path(__file__).resolve().parent
+env_path = current_dir.parent / '.env'
+
+# טעינה מפורשת מהנתיב הזה
+load_dotenv(dotenv_path=env_path)
+
 # It is recommended to use environment variables for security
-os.environ["GOOGLE_API_KEY"] = "YOUR_PASTED_API_KEY_HERE"
-genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
+api_key = os.getenv("GOOGLE_API_KEY")
+
+if not api_key:
+    raise ValueError("Error: API Key not found in .env file")
+
+genai.configure(api_key=api_key)
 
 # --- MODEL SETUP ---
 # Using 'gemini-1.5-flash' is recommended for the free tier due to higher rate limits (15 RPM).
 # If the image recognition isn't good enough, switch to 'gemini-1.5-pro'.
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel('gemini-flash-latest')
 
 # --- DATA PREPARATION ---
-image_path = 'image3.png'  # Ensure this file exists
+image_path = current_dir.parent / "images" / "img1_27.12.png"
 if not os.path.exists(image_path):
     print(f"Error: File '{image_path}' not found.")
     exit()

@@ -1,7 +1,22 @@
 import openpyxl
 from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
 from ortools.sat.python import cp_model
+import google.generativeai as genai
+import os
+from dotenv import load_dotenv
 
+# טעינת המפתח
+load_dotenv()
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+
+print("Listing available models...")
+try:
+    for m in genai.list_models():
+        # אנחנו מחפשים רק מודלים שיודעים לייצר תוכן (generateContent)
+        if 'generateContent' in m.supported_generation_methods:
+            print(m.name)
+except Exception as e:
+    print(f"Error: {e}")
 
 def solve_shift_scheduling():
     # -------------------------------------------------------------------------

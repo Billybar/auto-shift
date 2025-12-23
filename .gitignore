@@ -5,6 +5,7 @@ __pycache__/
 # Virtual environment
 venv/
 env/
+.env
 
 # Excel files (We don't want to track the output, only the code)
 *.xlsx
@@ -12,3 +13,6 @@ env/
 # IDE settings (Optional)
 .idea/
 .vscode/
+
+# images
+images/
