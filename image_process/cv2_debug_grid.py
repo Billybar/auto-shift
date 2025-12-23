@@ -1,6 +1,5 @@
-import cv2
-import numpy as np
 import os
+import cv2
 
 
 def detect_and_draw_grid(image_path):
@@ -67,8 +66,8 @@ def detect_and_draw_grid(image_path):
             tables_found += 1
 
     # 7. Save the outputs
-    cv2.imwrite("debug_1_grid_lines.png", grid_mask)
-    cv2.imwrite("debug_2_detected_tables.png", debug_image)
+    cv2.imwrite("../images/debug_1_grid_lines.png", grid_mask)
+    cv2.imwrite("../images/debug_2_detected_tables.png", debug_image)
 
     print(f"Done! Found {tables_found} potential table structures.")
     print("Check 'debug_1_grid_lines.png' to see the extracted black lines.")
@@ -78,7 +77,7 @@ def detect_and_draw_grid(image_path):
 if __name__ == "__main__":
     # Ensure you use the correct filename from your folder
     # Based on your upload, I assume you want to test the faint one
-    image_filename = "images/image3.png"
+    image_filename = "../images/image3.png"
 
     if os.path.exists(image_filename):
         detect_and_draw_grid(image_filename)

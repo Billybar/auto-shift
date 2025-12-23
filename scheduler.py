@@ -23,7 +23,7 @@ def solve_shift_scheduling():
     # 1. Data Definition
     # -------------------------------------------------------------------------
     employees = [
-        {'name': 'Barak', 'target_shifts': 6, 'max_shifts': 6,
+        {'name': 'Barak', 'target_shifts': 5, 'max_shifts': 6,
          'max_nights': 0, 'min_nights': 0,
          'max_mornings': 6, 'min_mornings': 6,
          'max_evenings': 0, 'min_evenings': 0,
@@ -47,7 +47,7 @@ def solve_shift_scheduling():
          'max_evenings': 3, 'min_evenings': 5,
          'history_streak': 0},
 
-        {'name': 'Saar', 'target_shifts': 5, 'max_shifts': 6,
+        {'name': 'Saar', 'target_shifts': 4, 'max_shifts': 4,
          'max_nights': 2, 'min_nights': 1,
          'max_mornings': 3, 'min_mornings': 0,
          'max_evenings': 5, 'min_evenings': 0,
@@ -71,7 +71,7 @@ def solve_shift_scheduling():
          'max_evenings': 4, 'min_evenings': 0,
          'history_streak': 0},
 
-        {'name': 'Dolev', 'target_shifts': 3, 'max_shifts': 4,
+        {'name': 'Dolev', 'target_shifts': 4, 'max_shifts': 4,
          'max_nights': 3, 'min_nights': 2,
          'max_mornings': 2, 'min_mornings': 0,
          'max_evenings': 4, 'min_evenings': 0,
@@ -138,7 +138,7 @@ def solve_shift_scheduling():
         if os.path.exists(IMAGE_FILENAME):
             try:
                 # Import only if needed to avoid crashes if file is missing/broken
-                from image_parser import ScheduleImageParser
+                from image_process.cv2_image_parser import ScheduleImageParser
 
                 # Define employee order in image (Top -> Down)
                 img_employee_order = [0, 1, 2, 3, 4, 5, 6, 7]
@@ -148,9 +148,9 @@ def solve_shift_scheduling():
                 image_constraints = parser.parse_tables(img_employee_order)
                 print(f"V Success: Extracted {len(image_constraints)} constraints from image.")
             except ImportError:
-                print("X Error: image_parser.py is missing or invalid.")
+                print("X Error: cv2_image_parser.py is missing or invalid.")
             except AttributeError:
-                print("X Error: 'parse_tables' function not found in image_parser.py. Check file version.")
+                print("X Error: 'parse_tables' function not found in cv2_image_parser.py. Check file version.")
             except Exception as e:
                 print(f"X General Error parsing image: {e}")
         else:
