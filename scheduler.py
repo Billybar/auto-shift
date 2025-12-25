@@ -27,19 +27,19 @@ def solve_shift_scheduling():
          'max_nights': 1, 'min_nights': 1,
          'max_mornings': 3, 'min_mornings': 2,
          'max_evenings': 3, 'min_evenings': 0,
-         'history_streak': 0},
+         'history_streak': 2},
 
         {'name': 'Asaf', 'target_shifts': 5, 'max_shifts': 6,
          'max_nights': 2, 'min_nights': 2,
          'max_mornings': 0, 'min_mornings': 0,
          'max_evenings': 3, 'min_evenings': 3,
-         'history_streak': 2},
+         'history_streak': 1},
 
         {'name': 'Barak', 'target_shifts': 5, 'max_shifts': 6,
          'max_nights': 0, 'min_nights': 0,
          'max_mornings': 6, 'min_mornings': 6,
          'max_evenings': 0, 'min_evenings': 0,
-         'history_streak': 0},
+         'history_streak': 4},
 
         {'name': 'Gilad', 'target_shifts': 3, 'max_shifts': 4,
          'max_nights': 1, 'min_nights': 1,
@@ -51,13 +51,13 @@ def solve_shift_scheduling():
          'max_nights': 2, 'min_nights': 2,
          'max_mornings': 3, 'min_mornings': 0,
          'max_evenings': 3, 'min_evenings': 5,
-         'history_streak': 0},
+         'history_streak': 3},
 
         {'name': 'Dolev', 'target_shifts': 4, 'max_shifts': 4,
          'max_nights': 3, 'min_nights': 2,
          'max_mornings': 2, 'min_mornings': 0,
          'max_evenings': 4, 'min_evenings': 0,
-         'history_streak': 0},
+         'history_streak': 1},
 
         {'name': 'Michael', 'target_shifts': 3, 'max_shifts': 4,
          'max_nights': 2, 'min_nights': 0,
@@ -69,13 +69,13 @@ def solve_shift_scheduling():
          'max_nights': 2, 'min_nights': 1,
          'max_mornings': 3, 'min_mornings': 0,
          'max_evenings': 5, 'min_evenings': 0,
-         'history_streak': 0},
+         'history_streak': 5},
 
         {'name': 'Billy', 'target_shifts': 5, 'max_shifts': 5,
          'max_nights': 2, 'min_nights': 1,
          'max_mornings': 3, 'min_mornings': 2,
          'max_evenings': 3, 'min_evenings': 3,
-         'history_streak': 6},
+         'history_streak': 0},
 
         {'name': 'Shon', 'target_shifts': 3, 'max_shifts': 4,
          'max_nights': 2, 'min_nights': 0,
@@ -83,6 +83,11 @@ def solve_shift_scheduling():
          'max_evenings': 4, 'min_evenings': 0,
          'history_streak': 0},
     ]
+
+    # Previous Week Context
+    # Enter the IDs of employees who worked last Saturday
+    worked_last_sat_noon = [1, 3]  # Example: Asaf and Gilad
+    worked_last_sat_night = [8]  # Example: Billy
 
     employee_colors = [
         'FF9999', '99FF99', '9999FF', 'FFFF99', 'FFCC99',
@@ -100,51 +105,51 @@ def solve_shift_scheduling():
     # Enter manual constraints here
     # Format: (Employee ID, Day 0-6, Shift 0-2)
     manual_requests = [
-        # ID 0
+        # --- ID 0: Ira ---
         (0, 3, 0), (0, 3, 1), (0, 3, 2),  # Wednesday: Full Day
         (0, 4, 0), (0, 4, 1), (0, 4, 2),  # Thursday: Full Day
 
-        # ID 1
-        (1, 5, 1), (1, 5, 2),  # Friday: Noon, Evening
-        (1, 6, 0), (1, 6, 1),  # Saturday: Morning, Noon
+        # --- ID 1: Asaf ---
+        (1, 5, 1), (1, 5, 2),  # Friday: Afternoon, Night
+        (1, 6, 0), (1, 6, 1),  # Saturday: Morning, Afternoon
 
-        # ID 2
-        (2, 2, 0),  # Tuesday: Morning
+        # --- ID 2: Barak ---
+        (2, 5, 0),  # Friday: Morning
         (2, 6, 0),  # Saturday: Morning
 
-        # ID 3 (Updated)
-        (3, 0, 0), (3, 0, 1), (3, 0, 2),  # Sunday: Full Day (New)
+        # --- ID 3: Gilad ---
+        (3, 0, 0), (3, 0, 1), (3, 0, 2),  # Sunday: Full Day
         (3, 1, 0), (3, 1, 1), (3, 1, 2),  # Monday: Full Day
-        (3, 2, 2),  # Tuesday: Evening (New)
-        (3, 3, 1), (3, 3, 2),  # Wednesday: Full Day
-        (3, 4, 2),  # Thursday: Evening
-        (3, 6, 1), (3, 6, 2),  # Saturday: Noon, Evening
+        (3, 2, 2),  # Tuesday: Night
+        (3, 3, 1), (3, 3, 2),  # Wednesday: Afternoon, Night
+        (3, 4, 2),  # Thursday: Night
+        (3, 6, 1), (3, 6, 2),  # Saturday: Afternoon, Night
 
-        # ID 4
+        # --- ID 4: Gadi ---
         (4, 0, 0), (4, 0, 1), (4, 0, 2),  # Sunday: Full Day
-        (4, 3, 1), (4, 3, 2),
+        (4, 3, 1), (4, 3, 2),  # Wednesday: Afternoon, Night
 
-        # ID 5 (Top Table)
+        # --- ID 5: Dolev ---
         (5, 4, 0), (5, 4, 1), (5, 4, 2),  # Thursday: Full Day
         (5, 5, 0), (5, 5, 1), (5, 5, 2),  # Friday: Full Day
 
-        # ID 6 (Middle Table)
+        # --- ID 6: Michael ---
         (6, 0, 0), (6, 0, 1), (6, 0, 2),  # Sunday: Full Day
-        (6, 1, 2),  # Monday: Evening
-        (6, 2, 2),  # Tuesday: Evening
-        (6, 3, 2),  # Wednesday: Evening
-        (6, 4, 2),  # Thursday: Evening
+        (6, 1, 2),  # Monday: Night
+        (6, 2, 2),  # Tuesday: Night
+        (6, 3, 2),  # Wednesday: Night
+        (6, 4, 2),  # Thursday: Night
 
         # ID 7
 
-        # ID 8 (Bottom Table) - ID Changed from 7 to 8
-        (8, 0, 0), (8, 0, 1), (8, 0, 2),  # Sunday: Full Day
-        (8,1,2),
-        (8, 2, 0),(8,2,2),  # Tuesday: Morning
+        # --- ID 8: Billy ---
+        (8, 0, 0), (8, 0, 1),  # Sunday: Morning, Afternoon
+        (8, 1, 2),  # Monday: Night
+        (8, 2, 0), (8, 2, 2),  # Tuesday: Morning, Night
         (8, 3, 0),  # Wednesday: Morning
-        (8, 4, 1), (8, 4, 2),  # Thursday: Noon, Evening
-        (8, 5, 1), (8, 5, 2),  # Friday: Noon, Evening
-        (8, 6, 0), (8, 6, 1), (8, 6, 2)  # Saturday: Full Day
+        (8, 4, 1), (8, 4, 2),  # Thursday: Afternoon, Night
+        (8, 5, 1), (8, 5, 2),  # Friday: Afternoon, Night
+        (8, 6, 0), (8, 6, 1), (8, 6, 2),  # Saturday: Full Day
 
         # ID 9
     ]
@@ -230,7 +235,13 @@ def solve_shift_scheduling():
         if 0 <= e < num_employees and 0 <= d < num_days and 0 <= s < num_shifts:
             model.Add(shift_vars[(e, d, s)] == 0)
 
-    # D. Prevent working 7 days in a row
+    # D. Previous Week Constraints (Rest Rules)
+    # Employees who worked last Saturday Night cannot work Sunday Morning.
+    for emp_id in worked_last_sat_night:
+        if 0 <= emp_id < num_employees:
+            model.Add(shift_vars[(emp_id, 0, 0)] == 0)
+
+    # E. Prevent working 7 days in a row
     for e in range(num_employees):
         work_days_vars = []
         for d in range(num_days):
