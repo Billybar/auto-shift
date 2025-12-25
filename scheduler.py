@@ -87,8 +87,8 @@ def solve_shift_scheduling():
     # Previous Week Context
     # Enter the IDs of employees who worked last Saturday
 
-    worked_last_sat_noon = [1, 3]  # Example: Asaf and Gilad
-    worked_last_sat_night = [8]  # Example: Billy
+    worked_last_sat_noon = [0, 4]  # Example: Ira and Gadi
+    worked_last_sat_night = [1,5]  # Example: Asaf, Dolev
 
     employee_colors = [
         'FF9999', '99FF99', '9999FF', 'FFFF99', 'FFCC99',
@@ -153,6 +153,18 @@ def solve_shift_scheduling():
         (8, 6, 0), (8, 6, 1), (8, 6, 2),  # Saturday: Full Day
 
         # ID 9
+    ]
+
+    # --------------------------------------------------------
+    # Manual Assignments (Force Shift)
+    # --------------------------------------------------------
+    # These employees MUST be assigned to these specific shifts.
+    manual_assignments = [
+        # Example: Force Employee 0 (Ira) to work Sunday Morning
+        # (0, 0, 0),
+
+        # Example: Force Employee 2 (Barak) to work Tuesday Night
+        # (2, 2, 2),
     ]
 
     # --------------------------------------------------------
@@ -236,13 +248,28 @@ def solve_shift_scheduling():
         if 0 <= e < num_employees and 0 <= d < num_days and 0 <= s < num_shifts:
             model.Add(shift_vars[(e, d, s)] == 0)
 
-    # D. Previous Week Constraints (Rest Rules)
+    # D. Apply Previous Week Constraints (Rest Rules)
     # Employees who worked last Saturday Night cannot work Sunday Morning.
     for emp_id in worked_last_sat_night:
         if 0 <= emp_id < num_employees:
             model.Add(shift_vars[(emp_id, 0, 0)] == 0)
 
-    # E. Prevent working 7 days in a row
+    # E. Apply Manual Assignments (Force Specific Shifts)
+    for assign in manual_assignments:
+        e, d, s = assign
+        # Avoid indexError
+        if 0 <= e < num_employees and 0 <= d < num_days and 0 <= s < num_shifts:
+            # Validate against unavailability constraints
+            if (e, d, s) in unavailable_requests:
+                emp_name = employees[e]['name']
+                raise ValueError(f"CRITICAL ERROR: Conflict detected for {emp_name}! "
+                                 f"You are forcing a shift (Day {d}, Shift {s}) but it is marked as UNAVAILABLE.")
+
+            print(f"Forcing assignment: Employee {e} -> Day {d} Shift {s}")
+            model.Add(shift_vars[(e, d, s)] == 1)
+
+
+    # F. Prevent working 7 days in a row
     for e in range(num_employees):
         work_days_vars = []
         for d in range(num_days):
