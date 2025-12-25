@@ -86,6 +86,7 @@ def solve_shift_scheduling():
 
     # Previous Week Context
     # Enter the IDs of employees who worked last Saturday
+
     worked_last_sat_noon = [1, 3]  # Example: Asaf and Gilad
     worked_last_sat_night = [8]  # Example: Billy
 
