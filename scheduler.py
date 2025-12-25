@@ -340,6 +340,15 @@ def solve_shift_scheduling():
                 both_working.Not())
             objective_terms.append(both_working * WEIGHT_REST_GAP)
 
+        # include Previous Week Gap (saturday noon and night)
+        if e in worked_last_sat_noon:
+            objective_terms.append(shift_vars[(e, 0, 0)] * WEIGHT_REST_GAP)
+
+        # Optimization: If worked Last Sat Night, avoid Sun Noon.
+        if e in worked_last_sat_night:
+            objective_terms.append(shift_vars[(e, 0, 1)] * WEIGHT_REST_GAP)
+
+
         # Target Shifts
         total_worked = sum(emp_shifts)
         delta = model.NewIntVar(0, 21, f'delta_target_{e}')
