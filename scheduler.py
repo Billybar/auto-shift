@@ -25,8 +25,8 @@ def solve_shift_scheduling():
     employees = [
         {'name': 'Ira', 'target_shifts': 5, 'max_shifts': 6,
          'max_nights': 1, 'min_nights': 1,
-         'max_mornings': 3, 'min_mornings': 2,
-         'max_evenings': 3, 'min_evenings': 0,
+         'max_mornings': 3, 'min_mornings': 1,
+         'max_evenings': 3, 'min_evenings': 1,
          'history_streak': 2},
 
         {'name': 'Asaf', 'target_shifts': 5, 'max_shifts': 6,
@@ -39,7 +39,7 @@ def solve_shift_scheduling():
          'max_nights': 0, 'min_nights': 0,
          'max_mornings': 6, 'min_mornings': 6,
          'max_evenings': 0, 'min_evenings': 0,
-         'history_streak': 4},
+         'history_streak': 0},
 
         {'name': 'Gilad', 'target_shifts': 3, 'max_shifts': 4,
          'max_nights': 1, 'min_nights': 1,
@@ -47,25 +47,25 @@ def solve_shift_scheduling():
          'max_evenings': 4, 'min_evenings': 0,
          'history_streak': 0},
 
-        {'name': 'Gadi', 'target_shifts': 5, 'max_shifts': 6,
+        {'name': 'Gadi', 'target_shifts': 4, 'max_shifts': 4,
          'max_nights': 2, 'min_nights': 2,
          'max_mornings': 3, 'min_mornings': 0,
          'max_evenings': 3, 'min_evenings': 5,
          'history_streak': 3},
 
         {'name': 'Dolev', 'target_shifts': 4, 'max_shifts': 4,
-         'max_nights': 3, 'min_nights': 2,
-         'max_mornings': 2, 'min_mornings': 0,
+         'max_nights': 2, 'min_nights': 2,
+         'max_mornings': 0, 'min_mornings': 0,
          'max_evenings': 4, 'min_evenings': 0,
          'history_streak': 1},
 
         {'name': 'Michael', 'target_shifts': 3, 'max_shifts': 4,
-         'max_nights': 2, 'min_nights': 0,
+         'max_nights': 2, 'min_nights': 1,
          'max_mornings': 2, 'min_mornings': 0,
-         'max_evenings': 2, 'min_evenings': 0,
+         'max_evenings': 2, 'min_evenings': 1,
          'history_streak': 0},
 
-        {'name': 'Saar', 'target_shifts': 4, 'max_shifts': 4,
+        {'name': 'Saar', 'target_shifts': 5, 'max_shifts': 5,
          'max_nights': 2, 'min_nights': 1,
          'max_mornings': 3, 'min_mornings': 0,
          'max_evenings': 5, 'min_evenings': 0,
@@ -74,12 +74,12 @@ def solve_shift_scheduling():
         {'name': 'Billy', 'target_shifts': 5, 'max_shifts': 5,
          'max_nights': 2, 'min_nights': 1,
          'max_mornings': 3, 'min_mornings': 2,
-         'max_evenings': 3, 'min_evenings': 3,
+         'max_evenings': 3, 'min_evenings': 2,
          'history_streak': 0},
 
         {'name': 'Shon', 'target_shifts': 3, 'max_shifts': 4,
-         'max_nights': 2, 'min_nights': 0,
-         'max_mornings': 2, 'min_mornings': 0,
+         'max_nights': 2, 'min_nights': 1,
+         'max_mornings': 0, 'min_mornings': 0,
          'max_evenings': 4, 'min_evenings': 0,
          'history_streak': 0},
     ]
@@ -153,6 +153,10 @@ def solve_shift_scheduling():
         (8, 6, 0), (8, 6, 1), (8, 6, 2),  # Saturday: Full Day
 
         # ID 9
+        # --- ID 9: Shon ---
+        (9, 3, 1), (9, 3, 2),  # Wednesday: Afternoon, Night
+        (9, 4, 0), (9, 4, 1),  # Thursday: Morning, Afternoon
+        (9, 5, 1), (9, 5, 2),  # Friday: Afternoon, Night
     ]
 
     # --------------------------------------------------------
@@ -163,8 +167,8 @@ def solve_shift_scheduling():
         # Example: Force Employee 0 (Ira) to work Sunday Morning
         # (0, 0, 0),
 
-        # Example: Force Employee 2 (Barak) to work Tuesday Night
-        # (2, 2, 2),
+        # ID 8
+        (8, 4, 0), (8, 5, 0),(8,1,1),
     ]
 
     # --------------------------------------------------------
