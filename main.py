@@ -40,18 +40,6 @@ def main():
     # Combine Lists
     unavailable_requests = config.MANUAL_REQUESTS + image_constraints
 
-    # Debug Print
-    print(f"\nTotal active constraints: {len(unavailable_requests)}")
-    days_map = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    shifts_map = ["Morning", "Noon", "Night"]
-
-    if len(unavailable_requests) > 0:
-        print("Constraints Details:")
-        for req in unavailable_requests:
-            e, d, s = req
-            if 0 <= e < len(config.EMPLOYEES):
-                print(f"- {config.EMPLOYEES[e]['name']}: {days_map[d]} {shifts_map[s]}")
-
     # --------------------------------------------------------
     # Run Optimization
     # --------------------------------------------------------
