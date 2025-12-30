@@ -88,5 +88,5 @@ def create_excel_schedule(solver, shift_vars, employees, num_days, num_shifts, s
         ws.cell(row=r, column=4).value = mornings
         ws.cell(row=r, column=5).value = evenings
 
-    wb.save("shift_schedule_colored.xlsx")
+    wb.save("shift_schedule_output/shift_schedule_colored.xlsx")
     print("Excel file created successfully: shift_schedule_colored.xlsx")
