@@ -79,6 +79,12 @@ def build_and_solve_model(employees, unavailable_requests, manual_assignments,
         if streak == 0:
             model.Add(sum(work_days_vars) < 7)
 
+    # G. Max one shift per day per employee
+    # One shift a day only - cannot do morning and night at the same day
+    for e in range(num_employees):
+        for d in range(num_days):
+            model.Add(sum(shift_vars[(e, d, s)] for s in range(num_shifts)) <= 1)
+
     # -------------------------------------------------------------------------
     # 4. Soft Constraints (Optimization)
     # -------------------------------------------------------------------------
@@ -135,6 +141,16 @@ def build_and_solve_model(employees, unavailable_requests, manual_assignments,
             model.AddBoolOr([shift_vars[(e, d, 2)].Not(), shift_vars[(e, d + 1, 2)].Not(),
                              shift_vars[(e, d + 2, 2)].Not()]).OnlyEnforceIf(is_three_nights.Not())
             objective_terms.append(is_three_nights * w['CONSECUTIVE_NIGHTS'])
+
+        # If employee worked last Sat night + works Sun night + works Mon night -> Penalty
+        if e in worked_last_sat_night:
+            is_continuation_3_nights = model.NewBoolVar(f'3nights_from_prev_week_{e}')
+            # בדיקה: האם עובד לילה ביום 0 (ראשון) וגם לילה ביום 1 (שני)
+            model.AddBoolAnd([shift_vars[(e, 0, 2)], shift_vars[(e, 1, 2)]]).OnlyEnforceIf(is_continuation_3_nights)
+            model.AddBoolOr([shift_vars[(e, 0, 2)].Not(), shift_vars[(e, 1, 2)].Not()]).OnlyEnforceIf(
+                is_continuation_3_nights.Not())
+
+            objective_terms.append(is_continuation_3_nights * w['CONSECUTIVE_NIGHTS'])
 
         # Avoid short rest gap
         for total_s in range(num_days * num_shifts - 2):
