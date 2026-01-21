@@ -30,7 +30,7 @@ WEIGHTS = {
 #         Data: Employees
 # ==========================================
 EMPLOYEES = [
-    {'name': 'Ira', 'target_shifts': 5, 'max_shifts': 6,
+    {'name': 'Ira', 'target_shifts': 5, 'max_shifts': 5,
      'max_nights': 1, 'min_nights': 1,
      'max_mornings': 3, 'min_mornings': 1,
      'max_evenings': 3, 'min_evenings': 1,
@@ -52,31 +52,31 @@ EMPLOYEES = [
      'max_nights': 1, 'min_nights': 1,
      'max_mornings': 3, 'min_mornings': 0,
      'max_evenings': 4, 'min_evenings': 0,
-     'history_streak': 0},
+     'history_streak': 3},
 
     {'name': 'Gadi', 'target_shifts': 5, 'max_shifts': 6,
      'max_nights': 2, 'min_nights': 2,
      'max_mornings': 2, 'min_mornings': 0,
      'max_evenings': 3, 'min_evenings': 5,
-     'history_streak': 0},
+     'history_streak': 3},
 
     {'name': 'Dolev', 'target_shifts': 4, 'max_shifts': 6,
      'max_nights': 2, 'min_nights': 2,
      'max_mornings': 1, 'min_mornings': 0,
      'max_evenings': 4, 'min_evenings': 0,
-     'history_streak': 0},
+     'history_streak': 1},
 
     {'name': 'Michael', 'target_shifts': 3, 'max_shifts': 5,
      'max_nights': 2, 'min_nights': 1,
      'max_mornings': 1, 'min_mornings': 0,
      'max_evenings': 2, 'min_evenings': 1,
-     'history_streak': 0},
+     'history_streak': 3},
 
     {'name': 'Saar', 'target_shifts': 5, 'max_shifts': 6,
      'max_nights': 2, 'min_nights': 1,
      'max_mornings': 3, 'min_mornings': 0,
      'max_evenings': 5, 'min_evenings': 0,
-     'history_streak': 0},
+     'history_streak': 4},
 
     {'name': 'Billy', 'target_shifts': 5, 'max_shifts': 5,
      'max_nights': 2, 'min_nights': 1,
@@ -84,8 +84,8 @@ EMPLOYEES = [
      'max_evenings': 3, 'min_evenings': 2,
      'history_streak': 0},
 
-    {'name': 'Shon', 'target_shifts': 3, 'max_shifts': 6,
-     'max_nights': 2, 'min_nights': 1,
+    {'name': 'Shon', 'target_shifts': 5, 'max_shifts': 6,
+     'max_nights': 3, 'min_nights': 1,
      'max_mornings': 1, 'min_mornings': 0,
      'max_evenings': 4, 'min_evenings': 0,
      'history_streak': 0},
@@ -99,7 +99,7 @@ EMPLOYEES = [
 
 EMPLOYEE_COLORS = [
     'FF9999', '99FF99', '9999FF', 'FFFF99', 'FFCC99',
-    'FF99FF', '99FFFF', 'CCCCCC', '87CEFA', 'E6B8B7'
+    'FF99FF', '99FFFF', 'CCCCCC', '87CEFA', 'E6B8B7', 'FFFFFF'
 ]
 
 # ==========================================
