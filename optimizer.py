@@ -85,6 +85,17 @@ def build_and_solve_model(employees, unavailable_requests, manual_assignments,
         for d in range(num_days):
             model.Add(sum(shift_vars[(e, d, s)] for s in range(num_shifts)) <= 1)
 
+    # H. Max shifts per employee (Hard Limit)
+    # Hard constraint: Limits the maximum number of shifts per employee
+    for e in range(num_employees):
+        shifts_of_employee = []
+        for d in range(num_days):
+            for s in range(num_shifts):
+                shifts_of_employee.append(shift_vars[(e, d, s)])
+
+        # Enforce the hard constraint
+        model.Add(sum(shifts_of_employee) <= employees[e]['max_shifts'])
+
     # -------------------------------------------------------------------------
     # 4. Soft Constraints (Optimization)
     # -------------------------------------------------------------------------
@@ -180,8 +191,6 @@ def build_and_solve_model(employees, unavailable_requests, manual_assignments,
         model.Add(employees[e]['target_shifts'] - total_worked <= delta)
         objective_terms.append(delta * w['TARGET_SHIFTS'])
 
-        # Hard limit max shifts
-        model.Add(total_worked <= employees[e]['max_shifts'])
 
     # -------------------------------------------------------------------------
     # 5. Solve
