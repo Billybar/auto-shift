@@ -70,7 +70,7 @@ class Employee:
     id: int
     name: str
     color: str
-    is_active: bool = True
+    is_active: bool
 
     # Composition
     contact: ContactDetails
