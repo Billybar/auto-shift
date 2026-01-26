@@ -176,6 +176,7 @@ EMPLOYEES: List[Employee] = [
         ),
         state=WeeklyState(
             history_streak=3,
+            worked_last_fri_night=True,
             worked_last_sat_noon=False,
             worked_last_sat_night=True,
             unavailable_shifts=[(0, 0), (0, 1), (4, 2), (5, 0), (6, 2)]

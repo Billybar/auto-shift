@@ -134,22 +134,47 @@ def build_and_solve_model(employees):
         objective_terms.append(shortage_evenings * w['MIN_EVENINGS'])
 
         # Logic and Rest (Consecutive Nights)
+        # 1. Standard check within the current week (Sunday to Saturday)
         for d in range(num_days - 2):
             is_three_nights = model.NewBoolVar(f'3nights_{e_idx}_{d}')
-            model.AddBoolAnd([shift_vars[(e_idx, d, 2)], shift_vars[(e_idx, d + 1, 2)],
-                              shift_vars[(e_idx, d + 2, 2)]]).OnlyEnforceIf(is_three_nights)
-            model.AddBoolOr([shift_vars[(e_idx, d, 2)].Not(), shift_vars[(e_idx, d + 1, 2)].Not(),
-                             shift_vars[(e_idx, d + 2, 2)].Not()]).OnlyEnforceIf(is_three_nights.Not())
+            model.AddBoolAnd([
+                shift_vars[(e_idx, d, 2)],
+                shift_vars[(e_idx, d + 1, 2)],
+                shift_vars[(e_idx, d + 2, 2)]
+            ]).OnlyEnforceIf(is_three_nights)
+
+            model.AddBoolOr([
+                shift_vars[(e_idx, d, 2)].Not(),
+                shift_vars[(e_idx, d + 1, 2)].Not(),
+                shift_vars[(e_idx, d + 2, 2)].Not()
+            ]).OnlyEnforceIf(is_three_nights.Not())
+
             objective_terms.append(is_three_nights * w['CONSECUTIVE_NIGHTS'])
 
-        # CHANGE 9: 3-Nights continuation check using 'emp.state.worked_last_sat_night'
-        if emp.state.worked_last_sat_night:
-            is_continuation_3_nights = model.NewBoolVar(f'3nights_from_prev_week_{e_idx}')
-            model.AddBoolAnd([shift_vars[(e_idx, 0, 2)], shift_vars[(e_idx, 1, 2)]]).OnlyEnforceIf(
-                is_continuation_3_nights)
-            model.AddBoolOr([shift_vars[(e_idx, 0, 2)].Not(), shift_vars[(e_idx, 1, 2)].Not()]).OnlyEnforceIf(
-                is_continuation_3_nights.Not())
-            objective_terms.append(is_continuation_3_nights * w['CONSECUTIVE_NIGHTS'])
+        # 2. HIDDEN SEQUENCES: Check continuation from last Friday/Saturday
+
+        # Case A: Worked Friday Night AND Saturday Night -> Penalize Sunday Night
+        if emp.state.worked_last_fri_night and emp.state.worked_last_sat_night:
+            is_3rd_night_sun = model.NewBoolVar(f'3nights_cont_sun_{e_idx}')
+            # If they work Sunday Night (Day 0, Shift 2), it's the 3rd consecutive night
+            model.Add(shift_vars[(e_idx, 0, 2)] == 1).OnlyEnforceIf(is_3rd_night_sun)
+            model.Add(shift_vars[(e_idx, 0, 2)] == 0).OnlyEnforceIf(is_3rd_night_sun.Not())
+            objective_terms.append(is_3rd_night_sun * w['CONSECUTIVE_NIGHTS'])
+
+        # Case B: Worked ONLY Saturday Night -> Penalize Sun+Mon sequence
+        elif emp.state.worked_last_sat_night:
+            is_3night_sequence_start = model.NewBoolVar(f'3nights_cont_sun_mon_{e_idx}')
+            # If they work Sunday AND Monday nights, it's the 3rd night in a row
+            model.AddBoolAnd([
+                shift_vars[(e_idx, 0, 2)],
+                shift_vars[(e_idx, 1, 2)]
+            ]).OnlyEnforceIf(is_3night_sequence_start)
+
+            model.AddBoolOr([
+                shift_vars[(e_idx, 0, 2)].Not(),
+                shift_vars[(e_idx, 1, 2)].Not()
+            ]).OnlyEnforceIf(is_3night_sequence_start.Not())
+            objective_terms.append(is_3night_sequence_start * w['CONSECUTIVE_NIGHTS'])
 
         # Rest Gap
         for total_s in range(num_days * num_shifts - 2):
