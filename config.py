@@ -70,12 +70,13 @@ class Employee:
     id: int
     name: str
     color: str
-    is_active: bool
 
     # Composition
     contact: ContactDetails
     prefs: ShiftPreferences
     state: WeeklyState
+
+    is_active: bool = True
 
 
 # ==========================================
