@@ -56,9 +56,10 @@ class ShiftPreferences:
 @dataclass
 class WeeklyState:
     """Dynamic State - resets or updates every week."""
-    history_streak: int
-    worked_last_sat_noon: bool
-    worked_last_sat_night: bool
+    history_streak: int = 0
+    worked_last_fri_night: bool = False
+    worked_last_sat_noon: bool = False
+    worked_last_sat_night: bool = False
     # Specific constraints for the current week
     unavailable_shifts: List[Tuple[int, int]] = field(default_factory=list)
     forced_shifts: List[Tuple[int, int]] = field(default_factory=list)
