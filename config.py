@@ -18,7 +18,7 @@ SHIFTS_PER_DAY_DEMAND = 2
 # Optimization Weights
 WEIGHTS = {
     'TARGET_SHIFTS': 40,
-    'REST_GAP': 2,
+    'REST_GAP': 20,
     'MAX_NIGHTS': 5,
     'MAX_MORNINGS': 4,
     'MAX_EVENINGS': 2,
@@ -90,14 +90,21 @@ EMPLOYEES: List[Employee] = [
         prefs=ShiftPreferences(
             target_shifts=5, max_shifts=5,
             max_nights=1, min_nights=1,
-            max_mornings=3, min_mornings=1,
-            max_evenings=3, min_evenings=1
+            max_mornings=2, min_mornings=0,
+            max_evenings=4, min_evenings=1
         ),
         state=WeeklyState(
-            history_streak=0,
+            history_streak=1,
+            worked_last_fri_night=False,
             worked_last_sat_noon=True,
             worked_last_sat_night=False,
-            unavailable_shifts=[(6, 1), (6, 2)]
+            forced_shifts=[],
+            unavailable_shifts=[
+                (1,0),(2,0),(3,0),(4,0),
+                (1, 0),                  # Monday: Morning
+                (5, 1), (5, 2),          # Friday: Noon, Night
+                (6, 0), (6, 1), (6, 2)     # Saturday: Full Day
+            ]
         )
     ),
 
@@ -111,14 +118,16 @@ EMPLOYEES: List[Employee] = [
             max_evenings=3, min_evenings=1
         ),
         state=WeeklyState(
-            history_streak=0,
+            history_streak=1,
+            worked_last_fri_night=False,
             worked_last_sat_noon=False,
-            worked_last_sat_night=False,
+            worked_last_sat_night=True,
+            forced_shifts=[],
             unavailable_shifts=[
-                (0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2),
-                (2, 0), (2, 1), (2, 2), (3, 0), (3, 1), (3, 2),
-                (4, 0), (4, 1), (4, 2), (5, 0), (5, 1), (5, 2),
-                (6, 0), (6, 1), (6, 2)
+                (1, 1), (1, 2),  # Monday: Noon, Night
+                (4, 1), (4, 2),  # Thursday: Noon, Night
+                (5, 0), (5, 1), (5, 2),  # Friday: Full Day
+                (6, 0), (6, 1), (6, 2)  # Saturday: Full Day
             ]
         )
     ),
@@ -127,20 +136,18 @@ EMPLOYEES: List[Employee] = [
         id=2, name='Barak', color='9999FF',
         contact=ContactDetails(),
         prefs=ShiftPreferences(
-            target_shifts=5, max_shifts=6,
+            target_shifts=6, max_shifts=6,
             max_nights=0, min_nights=0,
             max_mornings=6, min_mornings=4,
             max_evenings=0, min_evenings=0
         ),
         state=WeeklyState(
             history_streak=0,
+            worked_last_fri_night=False,
             worked_last_sat_noon=False,
             worked_last_sat_night=False,
+            forced_shifts=[(0,0),(1,0),(2,0),(3,0),(4,0),(6,0)],
             unavailable_shifts=[
-                (0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2),
-                (2, 0), (2, 1), (2, 2), (3, 0), (3, 1), (3, 2),
-                (4, 0), (4, 1), (4, 2), (5, 0), (5, 1), (5, 2),
-                (6, 0), (6, 1), (6, 2)
             ]
         )
     ),
@@ -155,12 +162,18 @@ EMPLOYEES: List[Employee] = [
             max_evenings=4, min_evenings=0
         ),
         state=WeeklyState(
-            history_streak=3,
+            history_streak=1,
+            worked_last_fri_night=False,
             worked_last_sat_noon=False,
             worked_last_sat_night=False,
+            forced_shifts=[],
             unavailable_shifts=[
-                (0, 0), (0, 1), (0, 2), (1, 2), (1, 1), (2, 2),
-                (3, 0), (3, 1), (3, 2), (4, 0), (5, 2), (6, 1), (6, 2)
+                (0, 0), (0, 2),          # Sunday: Morning, Night
+                (1, 0), (1, 1), (1, 2),  # Monday: Full Day
+                (2, 0), (2, 2),          # Tuesday: Morning, Night
+                (3, 2),                  # Wednesday: Night
+                (5, 2),                  # Friday: Night
+                (6, 1), (6, 2)           # Saturday: Noon, Night
             ]
         )
     ),
@@ -175,11 +188,16 @@ EMPLOYEES: List[Employee] = [
             max_evenings=3, min_evenings=5
         ),
         state=WeeklyState(
-            history_streak=3,
+            history_streak=5,
             worked_last_fri_night=True,
             worked_last_sat_noon=False,
             worked_last_sat_night=True,
-            unavailable_shifts=[(0, 0), (0, 1), (4, 2), (5, 0), (6, 2)]
+            forced_shifts=[],
+            unavailable_shifts=[
+                (1, 0), (1, 1), (1, 2),  # Monday: Full Day
+                (4, 2),                  # Thursday: Night
+                (5, 0)                   # Friday: Morning
+            ]
         )
     ),
 
@@ -193,10 +211,20 @@ EMPLOYEES: List[Employee] = [
             max_evenings=4, min_evenings=0
         ),
         state=WeeklyState(
-            history_streak=1,
+            history_streak=0,
+            worked_last_fri_night=False,
             worked_last_sat_noon=False,
             worked_last_sat_night=False,
-            unavailable_shifts=[(5, 0), (5, 1), (5, 2)]
+            forced_shifts=[],
+            unavailable_shifts=[
+                (0, 0), (0, 1), (0, 2),  # Sunday: Full Day
+                (1, 0), (1, 1), (1, 2),  # Monday: Full Day
+                (2, 0), (2, 1), (2, 2),  # Tuesday: Full Day
+                (3, 0),
+                (4, 0),(4, 2),           # Thursday: Night
+                (5, 0),                  # Friday: Morning
+                (6, 1), (6, 2)           # Saturday: Noon, Night
+            ]
         )
     ),
 
@@ -204,18 +232,23 @@ EMPLOYEES: List[Employee] = [
         id=6, name='Michael', color='99FFFF',
         contact=ContactDetails(),
         prefs=ShiftPreferences(
-            target_shifts=3, max_shifts=5,
+            target_shifts=5, max_shifts=5,
             max_nights=2, min_nights=1,
             max_mornings=1, min_mornings=0,
             max_evenings=2, min_evenings=1
         ),
         state=WeeklyState(
-            history_streak=3,
+            history_streak=0,
+            worked_last_fri_night=True,
             worked_last_sat_noon=False,
-            worked_last_sat_night=True,
+            worked_last_sat_night=False,
+            forced_shifts=[],
             unavailable_shifts=[
-                (0, 0), (0, 2), (1, 0), (1, 2), (2, 0), (2, 2),
-                (3, 0), (3, 2), (4, 0), (4, 2)
+                (0, 0), (0, 2),          # Sunday: Morning, Night
+                (1, 0), (1, 2),          # Monday: Morning, Night
+                (2, 0), (2, 2),          # Tuesday: Morning, Night
+                (3, 0), (3, 2),          # Wednesday: Morning, Night
+                (4, 0), (4, 2)           # Thursday: Morning, Night
             ]
         )
     ),
@@ -224,16 +257,20 @@ EMPLOYEES: List[Employee] = [
         id=7, name='Saar', color='CCCCCC',
         contact=ContactDetails(),
         prefs=ShiftPreferences(
-            target_shifts=5, max_shifts=6,
+            target_shifts=5, max_shifts=5,
             max_nights=2, min_nights=1,
-            max_mornings=3, min_mornings=0,
+            max_mornings=0, min_mornings=0,
             max_evenings=5, min_evenings=0
         ),
         state=WeeklyState(
-            history_streak=4,
+            history_streak=2,
+            worked_last_fri_night=False,
             worked_last_sat_noon=True,
             worked_last_sat_night=False,
-            unavailable_shifts=[]
+            forced_shifts=[],
+            unavailable_shifts=[
+                (0,0),(1,0),(2,0),(3,0),(4,0)
+            ]
         )
     ),
 
@@ -241,19 +278,18 @@ EMPLOYEES: List[Employee] = [
         id=8, name='Billy', color='87CEFA',
         contact=ContactDetails(),
         prefs=ShiftPreferences(
-            target_shifts=5, max_shifts=5,
+            target_shifts=4, max_shifts=4,
             max_nights=2, min_nights=1,
             max_mornings=3, min_mornings=2,
             max_evenings=3, min_evenings=2
         ),
         state=WeeklyState(
             history_streak=0,
+            worked_last_fri_night=False,
             worked_last_sat_noon=False,
             worked_last_sat_night=False,
-            forced_shifts=[(1, 0), (2, 1), (3, 1), (4, 0), (5, 0)],
+            forced_shifts=[(0,2), (2, 1), (3, 1), (5, 0)],
             unavailable_shifts=[
-                (0, 0), (0, 1), (1, 2), (2, 0), (2, 2), (3, 0),
-                (4, 1), (5, 1), (5, 2), (6, 0), (6, 1), (6, 2)
             ]
         )
     ),
@@ -262,24 +298,27 @@ EMPLOYEES: List[Employee] = [
         id=9, name='Shon', color='E6B8B7',
         contact=ContactDetails(),
         prefs=ShiftPreferences(
-            target_shifts=5, max_shifts=6,
+            target_shifts=0, max_shifts=0,
             max_nights=3, min_nights=1,
             max_mornings=1, min_mornings=0,
             max_evenings=4, min_evenings=0
         ),
         state=WeeklyState(
             history_streak=0,
+            worked_last_fri_night=False,
             worked_last_sat_noon=False,
             worked_last_sat_night=False,
-            unavailable_shifts=[(0, 0), (0, 1), (0, 2), (1, 0), (5, 1)]
-        )
+            forced_shifts=[],
+            unavailable_shifts=[]
+        ),
+        is_active = False
     ),
 
     Employee(
         id=10, name='ENFORCE', color='FFFFFF',
         contact=ContactDetails(),
         prefs=ShiftPreferences(
-            target_shifts=1, max_shifts=1,
+            target_shifts=0, max_shifts=2,
             max_nights=2, min_nights=0,
             max_mornings=1, min_mornings=0,
             max_evenings=4, min_evenings=0
@@ -289,6 +328,8 @@ EMPLOYEES: List[Employee] = [
             worked_last_sat_noon=False,
             worked_last_sat_night=False,
             unavailable_shifts=[]
-        )
+        ),
+
+        is_active = True
     )
 ]
