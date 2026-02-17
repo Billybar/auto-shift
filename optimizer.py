@@ -16,17 +16,16 @@ def build_and_solve_model(employees):
             for s in range(num_shifts):
                 shift_vars[(e, d, s)] = model.NewBoolVar(f'shift_{e}_{d}_{s}')
 
-    # --- Hard Constraints ---
-
+    # ----------------------- #
+    # --- Hard Constraints ---#
+    # ----------------------- #
     # A. Demand (Exact number of workers per shift)
     for d in range(num_days):
         for s in range(num_shifts):
-            # CHANGE 2: Check 'is_active' directly from the employee object
             model.Add(sum(shift_vars[(e, d, s)] for e in range(num_employees) if
                           employees[e].is_active) == config.SHIFTS_PER_DAY_DEMAND)
 
     # LOOP PER EMPLOYEE
-    # Instead of global loops for constraints, we iterate through each employee once
     for e_idx, emp in enumerate(employees):
 
         # Skip inactive employees entirely (force all their shifts to 0)
@@ -45,18 +44,13 @@ def build_and_solve_model(employees):
             next_shift = next_total_s % num_shifts
             model.Add(shift_vars[(e_idx, day, shift)] + shift_vars[(e_idx, next_day, next_shift)] <= 1)
 
-        # CHANGE 3: Unavailability is now pulled from 'emp.state'
-        # Old code: iterated over a global 'unavailable_requests' list
+        # Assign unavailable_requests
         for day, shift in emp.state.unavailable_shifts:
             model.Add(shift_vars[(e_idx, day, shift)] == 0)
 
-        # CHANGE 4: Previous Week History is pulled from 'emp.state'
-        # Old code: checked 'if e_idx in worked_last_sat_night'
         if emp.state.worked_last_sat_night:
             model.Add(shift_vars[(e_idx, 0, 0)] == 0)  # Cannot work Sunday morning
 
-        # CHANGE 5: Manual Assignments (Forced Shifts) are pulled from 'emp.state'
-        # Old code: iterated over a global 'manual_assignments' list
         for day, shift in emp.state.forced_shifts:
             # internal validation
             if (day, shift) in emp.state.unavailable_shifts:
@@ -66,7 +60,7 @@ def build_and_solve_model(employees):
             print(f"Forcing assignment: {emp.name} -> Day {day} Shift {shift}")
             model.Add(shift_vars[(e_idx, day, shift)] == 1)
 
-        # F. Max Streak (Logic uses 'emp.state.history_streak')
+        # F. Max Streak ( uses 'emp.state.history_streak')
         work_days_vars = []
         for d in range(num_days):
             is_working_day = model.NewBoolVar(f'working_day_{e_idx}_{d}')
@@ -75,7 +69,6 @@ def build_and_solve_model(employees):
                 is_working_day.Not())
             work_days_vars.append(is_working_day)
 
-        # CHANGE 6: Access history streak from state
         streak = emp.state.history_streak
         if streak > 0:
             limit = 7 - streak
@@ -88,11 +81,12 @@ def build_and_solve_model(employees):
         for d in range(num_days):
             model.Add(sum(shift_vars[(e_idx, d, s)] for s in range(num_shifts)) <= 1)
 
-        # CHANGE 7: Max shifts Hard Limit uses 'emp.prefs.max_shifts'
         shifts_flat = [shift_vars[(e_idx, d, s)] for d in range(num_days) for s in range(num_shifts)]
         model.Add(sum(shifts_flat) <= emp.prefs.max_shifts)
 
-    # --- Soft Constraints (Optimization) ---
+    # -------------------------------------- #
+    # --- Soft Constraints (Optimization) ---#
+    # -------------------------------------- #
     w = config.WEIGHTS
     objective_terms = []
 
@@ -104,8 +98,6 @@ def build_and_solve_model(employees):
         evening_shifts = [shift_vars[(e_idx, d, 1)] for d in range(num_days)]
         night_shifts = [shift_vars[(e_idx, d, 2)] for d in range(num_days)]
         emp_shifts = morning_shifts + evening_shifts + night_shifts
-
-        # CHANGE 8: All preferences are accessed via 'emp.prefs'
 
         # Max Constraints
         excess_nights = model.NewIntVar(0, 7, f'excess_nights_{e_idx}')
