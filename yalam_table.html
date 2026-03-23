@@ -49,6 +49,29 @@
                                         <!-- ngIf: emp.empHasRequests == 1  && vm.user.Permissions != 81 -->
                                         <!--i ng-if="emp.empHasRequests != 1" class="fa fa-circle" style="color:green" aria-hidden="true"></i-->
                                     </td>
+                                    <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">111031</td>
+                                    <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">אביתר שוסברגר<!-- ngIf: emp.CellPhone --><br ng-if="emp.CellPhone" class="ng-scope"><!-- end ngIf: emp.CellPhone -->0546647003
+                                   <br> <span style="font-weight:bold" class="ng-binding"></span>
+                                    </td>
+                                    <td ng-click="selectedEmpClick(emp, false)" style="width:150px">
+                                        <!-- ngIf: emp.empHasRequests == 1 && vm.user.Permissions != 81 -->
+                                    </td>
+                                    <td>
+                                        <button ng-hide="vm.user.Permissions == 81" style="float:left;" command="CopyWorkArrangement" ng-click="vm.CopyWork1(emp)" command-parameter="{context:vm, parameter: [CopyShift.update,item,shift.UniqueId,date,CopyShift]}" class="btn btn-transparent wa-float-button">
+
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                    </td>
+                                    <!--
+    <td ng-click="selectedEmpClick(emp, false)">{{emp.CellPhone}}</td>
+        -->
+
+                                </tr><!-- end ngRepeat: emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize --><tr ng-repeat="emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize" style="height: 40px;" ng-class="{'colorSelRow': emp.Name == lastName}" class="ng-scope">
+                                    <td style="display:none"></td>
+                                    <td style="height:40px">
+                                        <!-- ngIf: emp.empHasRequests == 1  && vm.user.Permissions != 81 -->
+                                        <!--i ng-if="emp.empHasRequests != 1" class="fa fa-circle" style="color:green" aria-hidden="true"></i-->
+                                    </td>
                                     <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">111172</td>
                                     <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">אירינה גונקו<!-- ngIf: emp.CellPhone --><br ng-if="emp.CellPhone" class="ng-scope"><!-- end ngIf: emp.CellPhone -->0549170213
                                    <br> <span style="font-weight:bold" class="ng-binding"></span>
@@ -109,7 +132,7 @@
                                                 <td><!-- ngIf: emp.jsonRequests.includes('31') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('41') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('51') --></td>
-                                                <td><!-- ngIf: emp.jsonRequests.includes('61') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('61')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('61') --></td>
+                                                <td><!-- ngIf: emp.jsonRequests.includes('61') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('71') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('71')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('71') --></td>
                                             </tr>
                                             <tr>
@@ -118,7 +141,7 @@
                                                 <td><!-- ngIf: emp.jsonRequests.includes('22') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('22')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('22') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('32') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('42') --></td>
-                                                <td><!-- ngIf: emp.jsonRequests.includes('52') --></td>
+                                                <td><!-- ngIf: emp.jsonRequests.includes('52') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('52')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('52') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('62') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('62')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('62') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('72') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('72')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('72') --></td>
                                             </tr>
@@ -126,8 +149,8 @@
                                                 <td><span style="font-size:9px">ערב</span></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('13') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('13')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('13') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('23') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('23')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('23') --></td>
-                                                <td><!-- ngIf: emp.jsonRequests.includes('33') --></td>
-                                                <td><!-- ngIf: emp.jsonRequests.includes('43') --></td>
+                                                <td><!-- ngIf: emp.jsonRequests.includes('33') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('33')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('33') --></td>
+                                                <td><!-- ngIf: emp.jsonRequests.includes('43') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('43')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('43') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('53') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('53')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('53') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('63') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('63')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('63') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('73') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('73')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('73') --></td>
@@ -144,7 +167,7 @@
     <td ng-click="selectedEmpClick(emp, false)">{{emp.CellPhone}}</td>
         -->
 
-                                </tr><!-- end ngRepeat: emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize --><tr ng-repeat="emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize" style="height:40px" ng-class="{'colorSelRow': emp.Name == lastName}" class="ng-scope">
+                                </tr><!-- end ngRepeat: emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize --><tr ng-repeat="emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize" style="height: 40px;" ng-class="{'colorSelRow': emp.Name == lastName}" class="ng-scope">
                                     <td style="display:none"></td>
                                     <td style="height:40px">
                                         <!-- ngIf: emp.empHasRequests == 1  && vm.user.Permissions != 81 -->
@@ -167,7 +190,7 @@
     <td ng-click="selectedEmpClick(emp, false)">{{emp.CellPhone}}</td>
         -->
 
-                                </tr><!-- end ngRepeat: emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize --><tr ng-repeat="emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize" style="height:40px" ng-class="{'colorSelRow': emp.Name == lastName}" class="ng-scope">
+                                </tr><!-- end ngRepeat: emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize --><tr ng-repeat="emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize" style="height: 40px;" ng-class="{'colorSelRow': emp.Name == lastName}" class="ng-scope">
                                     <td style="display:none"></td>
                                     <td style="height:40px">
                                         <!-- ngIf: emp.empHasRequests == 1  && vm.user.Permissions != 81 -->
@@ -196,9 +219,32 @@
                                         <!-- ngIf: emp.empHasRequests == 1  && vm.user.Permissions != 81 -->
                                         <!--i ng-if="emp.empHasRequests != 1" class="fa fa-circle" style="color:green" aria-hidden="true"></i-->
                                     </td>
+                                    <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">111647</td>
+                                    <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">בנטלי נתנאל<!-- ngIf: emp.CellPhone --><br ng-if="emp.CellPhone" class="ng-scope"><!-- end ngIf: emp.CellPhone -->0506505141
+                                   <br> <span style="font-weight:bold" class="ng-binding"></span>
+                                    </td>
+                                    <td ng-click="selectedEmpClick(emp, false)" style="width:150px">
+                                        <!-- ngIf: emp.empHasRequests == 1 && vm.user.Permissions != 81 -->
+                                    </td>
+                                    <td>
+                                        <button ng-hide="vm.user.Permissions == 81" style="float:left;" command="CopyWorkArrangement" ng-click="vm.CopyWork1(emp)" command-parameter="{context:vm, parameter: [CopyShift.update,item,shift.UniqueId,date,CopyShift]}" class="btn btn-transparent wa-float-button">
+
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                    </td>
+                                    <!--
+    <td ng-click="selectedEmpClick(emp, false)">{{emp.CellPhone}}</td>
+        -->
+
+                                </tr><!-- end ngRepeat: emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize --><tr ng-repeat="emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize" style="height: 40px;" ng-class="{'colorSelRow': emp.Name == lastName}" class="ng-scope">
+                                    <td style="display:none"></td>
+                                    <td style="height:40px">
+                                        <!-- ngIf: emp.empHasRequests == 1  && vm.user.Permissions != 81 -->
+                                        <!--i ng-if="emp.empHasRequests != 1" class="fa fa-circle" style="color:green" aria-hidden="true"></i-->
+                                    </td>
                                     <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">106363</td>
                                     <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">ברק טרבולסי<!-- ngIf: emp.CellPhone --><br ng-if="emp.CellPhone" class="ng-scope"><!-- end ngIf: emp.CellPhone -->0525376100
-                                   <br> <span style="font-weight:bold" class="ng-binding">מספר משמרות: 4, סהכ שעות: 33:00</span>
+                                   <br> <span style="font-weight:bold" class="ng-binding"></span>
                                     </td>
                                     <td ng-click="selectedEmpClick(emp, false)" style="width:150px">
                                         <!-- ngIf: emp.empHasRequests == 1 && vm.user.Permissions != 81 -->
@@ -221,7 +267,7 @@
                                     </td>
                                     <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">110606</td>
                                     <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">גלעד אלברט<!-- ngIf: emp.CellPhone --><br ng-if="emp.CellPhone" class="ng-scope"><!-- end ngIf: emp.CellPhone -->0586014490
-                                   <br> <span style="font-weight:bold" class="ng-binding">מספר משמרות: 1, סהכ שעות: 08:15</span>
+                                   <br> <span style="font-weight:bold" class="ng-binding"></span>
                                     </td>
                                     <td ng-click="selectedEmpClick(emp, false)" style="width:150px">
                                         <!-- ngIf: emp.empHasRequests == 1 && vm.user.Permissions != 81 --><table border="1" ng-if="emp.empHasRequests == 1 &amp;&amp; vm.user.Permissions != 81" style="width:100%;height:100%;border:1px;" class="ng-scope">
@@ -261,7 +307,7 @@
                                             </tr>
                                             <tr>
                                                 <td><span style="font-size:9px">צהריים</span></td>
-                                                <td><!-- ngIf: emp.jsonRequests.includes('12') --></td>
+                                                <td><!-- ngIf: emp.jsonRequests.includes('12') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('12')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('12') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('22') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('22')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('22') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('32') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('32')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('32') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('42') --></td>
@@ -299,7 +345,7 @@
                                     </td>
                                     <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">105744</td>
                                     <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">גרוסברד גדי<!-- ngIf: emp.CellPhone --><br ng-if="emp.CellPhone" class="ng-scope"><!-- end ngIf: emp.CellPhone -->0544701638
-                                   <br> <span style="font-weight:bold" class="ng-binding">מספר משמרות: 2, סהכ שעות: 16:30</span>
+                                   <br> <span style="font-weight:bold" class="ng-binding"></span>
                                     </td>
                                     <td ng-click="selectedEmpClick(emp, false)" style="width:150px">
                                         <!-- ngIf: emp.empHasRequests == 1 && vm.user.Permissions != 81 --><table border="1" ng-if="emp.empHasRequests == 1 &amp;&amp; vm.user.Permissions != 81" style="width:100%;height:100%;border:1px;" class="ng-scope">
@@ -350,7 +396,7 @@
                                             <tr>
                                                 <td><span style="font-size:9px">ערב</span></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('13') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('13')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('13') --></td>
-                                                <td><!-- ngIf: emp.jsonRequests.includes('23') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('23')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('23') --></td>
+                                                <td><!-- ngIf: emp.jsonRequests.includes('23') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('33') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('33')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('33') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('43') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('43')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('43') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('53') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('53')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('53') --></td>
@@ -369,14 +415,14 @@
     <td ng-click="selectedEmpClick(emp, false)">{{emp.CellPhone}}</td>
         -->
 
-                                </tr><!-- end ngRepeat: emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize --><tr ng-repeat="emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize" style="height:40px" ng-class="{'colorSelRow': emp.Name == lastName}" class="ng-scope">
+                                </tr><!-- end ngRepeat: emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize --><tr ng-repeat="emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize" style="height: 40px;" ng-class="{'colorSelRow': emp.Name == lastName}" class="ng-scope">
                                     <td style="display:none"></td>
                                     <td style="height:40px">
                                         <!-- ngIf: emp.empHasRequests == 1  && vm.user.Permissions != 81 -->
                                         <!--i ng-if="emp.empHasRequests != 1" class="fa fa-circle" style="color:green" aria-hidden="true"></i-->
                                     </td>
-                                    <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">108119</td>
-                                    <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">דולב אזולאי<!-- ngIf: emp.CellPhone --><br ng-if="emp.CellPhone" class="ng-scope"><!-- end ngIf: emp.CellPhone -->0547854949
+                                    <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">110212</td>
+                                    <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">לישצינסקי מיה<!-- ngIf: emp.CellPhone --><br ng-if="emp.CellPhone" class="ng-scope"><!-- end ngIf: emp.CellPhone -->0508668089
                                    <br> <span style="font-weight:bold" class="ng-binding"></span>
                                     </td>
                                     <td ng-click="selectedEmpClick(emp, false)" style="width:150px">
@@ -400,7 +446,7 @@
                                     </td>
                                     <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">111145</td>
                                     <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">מיכאל פייגין<!-- ngIf: emp.CellPhone --><br ng-if="emp.CellPhone" class="ng-scope"><!-- end ngIf: emp.CellPhone -->0508130204
-                                   <br> <span style="font-weight:bold" class="ng-binding">מספר משמרות: 2, סהכ שעות: 16:30</span>
+                                   <br> <span style="font-weight:bold" class="ng-binding"></span>
                                     </td>
                                     <td ng-click="selectedEmpClick(emp, false)" style="width:150px">
                                         <!-- ngIf: emp.empHasRequests == 1 && vm.user.Permissions != 81 --><table border="1" ng-if="emp.empHasRequests == 1 &amp;&amp; vm.user.Permissions != 81" style="width:100%;height:100%;border:1px;" class="ng-scope">
@@ -432,11 +478,11 @@
                                                  <td><span style="font-size:9px">בוקר</span></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('11') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('11')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('11') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('21') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('21')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('21') --></td>
-                                                <td><!-- ngIf: emp.jsonRequests.includes('31') --></td>
+                                                <td><!-- ngIf: emp.jsonRequests.includes('31') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('31')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('31') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('41') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('41')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('41') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('51') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('51')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('51') --></td>
-                                                <td><!-- ngIf: emp.jsonRequests.includes('61') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('61')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('61') --></td>
-                                                <td><!-- ngIf: emp.jsonRequests.includes('71') --></td>
+                                                <td><!-- ngIf: emp.jsonRequests.includes('61') --></td>
+                                                <td><!-- ngIf: emp.jsonRequests.includes('71') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('71')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('71') --></td>
                                             </tr>
                                             <tr>
                                                 <td><span style="font-size:9px">צהריים</span></td>
@@ -444,19 +490,19 @@
                                                 <td><!-- ngIf: emp.jsonRequests.includes('22') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('32') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('42') --></td>
-                                                <td><!-- ngIf: emp.jsonRequests.includes('52') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('52')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('52') --></td>
+                                                <td><!-- ngIf: emp.jsonRequests.includes('52') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('62') --></td>
-                                                <td><!-- ngIf: emp.jsonRequests.includes('72') --></td>
+                                                <td><!-- ngIf: emp.jsonRequests.includes('72') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('72')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('72') --></td>
                                             </tr>
                                             <tr>
                                                 <td><span style="font-size:9px">ערב</span></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('13') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('13')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('13') --></td>
-                                                <td><!-- ngIf: emp.jsonRequests.includes('23') --></td>
+                                                <td><!-- ngIf: emp.jsonRequests.includes('23') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('23')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('23') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('33') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('33')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('33') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('43') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('43')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('43') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('53') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('53')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('53') --></td>
                                                 <td><!-- ngIf: emp.jsonRequests.includes('63') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('63')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('63') --></td>
-                                                <td><!-- ngIf: emp.jsonRequests.includes('73') --></td>
+                                                <td><!-- ngIf: emp.jsonRequests.includes('73') --><i class="fa fa-circle tblCircle ng-scope" ng-if="emp.jsonRequests.includes('73')" aria-hidden="true"></i><!-- end ngIf: emp.jsonRequests.includes('73') --></td>
                                             </tr>
                                         </tbody></table><!-- end ngIf: emp.empHasRequests == 1 && vm.user.Permissions != 81 -->
                                     </td>
@@ -470,7 +516,7 @@
     <td ng-click="selectedEmpClick(emp, false)">{{emp.CellPhone}}</td>
         -->
 
-                                </tr><!-- end ngRepeat: emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize --><tr ng-repeat="emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize" style="height:40px" ng-class="{'colorSelRow': emp.Name == lastName}" class="ng-scope">
+                                </tr><!-- end ngRepeat: emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize --><tr ng-repeat="emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize" style="height: 40px;" ng-class="{'colorSelRow': emp.Name == lastName}" class="ng-scope">
                                     <td style="display:none"></td>
                                     <td style="height:40px">
                                         <!-- ngIf: emp.empHasRequests == 1  && vm.user.Permissions != 81 -->
@@ -501,6 +547,29 @@
                                     </td>
                                     <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">111046</td>
                                     <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">סער אליעזרי<!-- ngIf: emp.CellPhone --><br ng-if="emp.CellPhone" class="ng-scope"><!-- end ngIf: emp.CellPhone -->0503400256
+                                   <br> <span style="font-weight:bold" class="ng-binding"></span>
+                                    </td>
+                                    <td ng-click="selectedEmpClick(emp, false)" style="width:150px">
+                                        <!-- ngIf: emp.empHasRequests == 1 && vm.user.Permissions != 81 -->
+                                    </td>
+                                    <td>
+                                        <button ng-hide="vm.user.Permissions == 81" style="float:left;" command="CopyWorkArrangement" ng-click="vm.CopyWork1(emp)" command-parameter="{context:vm, parameter: [CopyShift.update,item,shift.UniqueId,date,CopyShift]}" class="btn btn-transparent wa-float-button">
+
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                    </td>
+                                    <!--
+    <td ng-click="selectedEmpClick(emp, false)">{{emp.CellPhone}}</td>
+        -->
+
+                                </tr><!-- end ngRepeat: emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize --><tr ng-repeat="emp in Employees | orderBy:sortType:sortReverse | filter:searchFish | startFrom:currentPage*pageSize | limitTo:pageSize" style="height: 40px;" ng-class="{'colorSelRow': emp.Name == lastName}" class="ng-scope">
+                                    <td style="display:none"></td>
+                                    <td style="height:40px">
+                                        <!-- ngIf: emp.empHasRequests == 1  && vm.user.Permissions != 81 -->
+                                        <!--i ng-if="emp.empHasRequests != 1" class="fa fa-circle" style="color:green" aria-hidden="true"></i-->
+                                    </td>
+                                    <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">111642</td>
+                                    <td ng-click="selectedEmpClick(emp, false)" class="ng-binding">עידו כהן<!-- ngIf: emp.CellPhone --><br ng-if="emp.CellPhone" class="ng-scope"><!-- end ngIf: emp.CellPhone -->0506666207
                                    <br> <span style="font-weight:bold" class="ng-binding"></span>
                                     </td>
                                     <td ng-click="selectedEmpClick(emp, false)" style="width:150px">

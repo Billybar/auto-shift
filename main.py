@@ -6,7 +6,7 @@ from ortools.sat.python import cp_model
 import config
 import optimizer
 import excel_writer
-import yalam_html_parser
+
 
 
 def main():
